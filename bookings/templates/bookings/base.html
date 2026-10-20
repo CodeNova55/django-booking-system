@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Book an appointment{% endblock %}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; color: #1f2933; background: #f5f7fa; }
+    header { background: #243b53; color: #fff; padding: 14px 24px; }
+    header a { color: #fff; text-decoration: none; font-weight: 600; }
+    main { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    .card { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+    .filters { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; margin-bottom: 16px; }
+    label { display: block; font-size: 13px; margin-bottom: 4px; }
+    select, input[type=text], input[type=email] { padding: 8px; border: 1px solid #bcccdc; border-radius: 6px; }
+    button, .btn { background: #2680c2; color: #fff; border: 0; border-radius: 6px; padding: 8px 12px;
+                   cursor: pointer; text-decoration: none; display: inline-block; font-size: 14px; }
+    .btn.secondary { background: #829ab1; }
+    .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+    .day { background: #fff; border-radius: 8px; padding: 10px; min-height: 120px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+    .day.today { outline: 2px solid #2680c2; }
+    .day h3 { margin: 0 0 8px; font-size: 14px; }
+    .slot { display: block; margin-bottom: 6px; text-align: center; background: #e3f8ff; color: #035388;
+            border-radius: 6px; padding: 6px 0; text-decoration: none; font-size: 13px; }
+    .slot:hover { background: #bae3ff; }
+    .empty { color: #829ab1; font-size: 13px; }
+    .msg { padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; background: #ffe3e3; color: #a61b1b; }
+    .errorlist { color: #a61b1b; margin: 4px 0; padding-left: 16px; }
+    .nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    @media (max-width: 800px) { .week { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header><a href="{% url 'calendar' %}">Booking System</a></header>
+  <main>
+    {% for message in messages %}<div class="msg">{{ message }}</div>{% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

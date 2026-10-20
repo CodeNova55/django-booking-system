@@ -1,0 +1,10 @@
+{% extends "bookings/base.html" %}
+{% block content %}
+<h1>Booking confirmed</h1>
+<div class="card">
+  <p>Thanks, {{ appt.customer_name }}. You are booked in for
+  <strong>{{ appt.service.name }}</strong> with {{ appt.provider.name }} on
+  {{ appt.start|date:"l j F Y" }} at {{ appt.start|time:"H:i" }}.</p>
+  <a class="btn" href="{% url 'calendar' %}">Book another</a>
+</div>
+{% endblock %}

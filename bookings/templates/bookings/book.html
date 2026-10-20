@@ -1,0 +1,18 @@
+{% extends "bookings/base.html" %}
+{% block content %}
+<h1>Confirm your booking</h1>
+<div class="card">
+  <p><strong>{{ service.name }}</strong> with {{ provider.name }}<br>
+  {{ start|date:"l j F Y" }} at {{ start|time:"H:i" }} ({{ service.duration_minutes }} min)</p>
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="provider" value="{{ provider.pk }}">
+    <input type="hidden" name="service" value="{{ service.pk }}">
+    <input type="hidden" name="start" value="{{ start.isoformat }}">
+    <p><label for="id_customer_name">Your name</label>{{ form.customer_name }}{{ form.customer_name.errors }}</p>
+    <p><label for="id_customer_email">Your email</label>{{ form.customer_email }}{{ form.customer_email.errors }}</p>
+    <button type="submit">Book appointment</button>
+    <a class="btn secondary" href="{% url 'calendar' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}
