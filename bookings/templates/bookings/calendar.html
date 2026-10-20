@@ -1,0 +1,50 @@
+{% extends "bookings/base.html" %}
+{% block content %}
+<h1>Book an appointment</h1>
+
+{% if not provider %}
+  <div class="card">No providers yet. Add services, providers and working hours in the
+  <a href="/admin/">admin</a>.</div>
+{% else %}
+<form method="get" class="filters">
+  <div>
+    <label for="provider">Provider</label>
+    <select name="provider" id="provider" onchange="this.form.submit()">
+      {% for p in providers %}<option value="{{ p.pk }}" {% if p == provider %}selected{% endif %}>{{ p.name }}</option>{% endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="service">Service</label>
+    <select name="service" id="service" onchange="this.form.submit()">
+      {% for s in services %}<option value="{{ s.pk }}" {% if s == service %}selected{% endif %}>{{ s }}</option>{% endfor %}
+    </select>
+  </div>
+  <input type="hidden" name="week" value="{{ week_start|date:'Y-m-d' }}">
+  <noscript><button type="submit">Update</button></noscript>
+</form>
+
+<div class="nav">
+  <a class="btn secondary" href="?provider={{ provider.pk }}&service={{ service.pk }}&week={{ prev_week|date:'Y-m-d' }}">&larr; Previous week</a>
+  <strong>Week of {{ week_start|date:"j M Y" }}</strong>
+  <a class="btn secondary" href="?provider={{ provider.pk }}&service={{ service.pk }}&week={{ next_week|date:'Y-m-d' }}">Next week &rarr;</a>
+</div>
+
+{% if service %}
+<div class="week">
+  {% for day in days %}
+  <div class="day {% if day.is_today %}today{% endif %}">
+    <h3>{{ day.date|date:"D j M" }}</h3>
+    {% for slot in day.slots %}
+      <a class="slot" href="{% url 'book' %}?provider={{ provider.pk }}&service={{ service.pk }}&start={{ slot.isoformat|urlencode }}">{{ slot|time:"H:i" }}</a>
+    {% empty %}
+      <span class="empty">No free slots</span>
+    {% endfor %}
+    <p><a href="{% url 'day_schedule' provider.pk day.date|date:'Y-m-d' %}">Day schedule</a></p>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+  <div class="card">This provider has no services yet. Add some in the <a href="/admin/">admin</a>.</div>
+{% endif %}
+{% endif %}
+{% endblock %}
